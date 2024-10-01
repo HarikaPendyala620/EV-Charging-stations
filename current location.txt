@@ -1,0 +1,27 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function CurrentLocation() {
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setCurrentLocation(position.coords);
+    });
+  }, []);
+
+  return (
+    <div>
+      <h1>Current Location</h1>
+      {currentLocation && (
+        <p>
+          Latitude: {currentLocation.latitude}, Longitude: {currentLocation.longitude}
+        </p>
+      )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div>
+  );
+}
+
+export default CurrentLocation;
