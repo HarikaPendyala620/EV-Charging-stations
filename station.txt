@@ -1,0 +1,42 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function StationDetails() {
+  const [station, setStation] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const stationId = window.location.pathname.split('/').pop();
+    axios.get(`/api/stations/${stationId}`)
+      .then(response => {
+        setStation(response.data);
+      })
+      .catch(error => {
+        setError(error.message);
+      });
+  }, []);
+
+  return (
+    <div>
+      <h1>Station Details</h1>
+      {station && (
+        <div>
+          <h2>{station.name}</h2>
+          <p>Address: {station.address}</p>
+          <p>City: {station.city}</p>
+          <p>State: {station.state}</p>
+          <p>Zip: {station.zip}</p>
+          <p>Phone: {station.phone}</p>
+          <p>Email: {station.email}</p>
+          <p>Hours of Operation: {station.hours}</p>
+          <p>Charging Speed: {station.chargingSpeed}</p>
+          <p>Charging Type: {station.chargingType}</p>
+          <p>Payment Methods: {station.paymentMethods}</p>
+        </div>
+      )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div>
+  );
+}
+
+export default StationDetails;
