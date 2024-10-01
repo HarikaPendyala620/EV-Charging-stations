@@ -1,0 +1,30 @@
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+
+const Station = mongoose.model('Station', {
+  name: String,
+  address: String,
+  city: String,
+  state: String,
+  zip: String,
+  phone: String,
+  email: String,
+  hours: String,
+  chargingSpeed: String,
+  chargingType: String,
+  paymentMethods: String,
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const stationId = req.params.id;
+    const station = await Station.findById(stationId);
+    res.send(station);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send({ message: 'Station not found' });
+  }
+});
+
+module.exports = router;
