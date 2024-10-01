@@ -1,0 +1,34 @@
+import React, { useState } from 'react';
+ import axios from 'axios';
+
+function Payment() {
+  const [amount, setAmount] = useState(0);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/payments', { amount });
+      console.log(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Payment</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Amount:
+          <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Pay</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </form>
+    </div>
+  );
+}
+
+export default Payment;

@@ -1,0 +1,40 @@
+import React, { useState } from 'react';
+
+function SlotBookingForm() 
+{
+  const [station, setStation] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/bookings', { station, date, time });
+      console.log(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  return 
+    <div>
+      <h1>Slot Booking Form</h1> 
+      <form onSubmit={handleSubmit}>
+        <label>
+          Station:
+          <input type="text" value={station} onChange={(event) => setStation(event.target.value)} />
+        </label>
+        <br />
+        <label>
+          Date:
+          <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+        </label>
+        <br />
+        <label>
+          Time:
+          <input type="time" value={date} onChange={(event) => setTime(event.target.value)} />
+         </label>
+         <br />
+         }
+         

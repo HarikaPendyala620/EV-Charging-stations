@@ -1,0 +1,35 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
+
+function App() {
+  const [stations, setStations] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/stations')
+      .then(response => {
+        setStations(response.data);
+      })
+      .catch(error => {
+        setError(error.message);
+      });
+  }, []);
+
+  return (
+    <div className="App">
+      <h1>EV Charging Stations</h1>
+      <ul>
+        {stations.map(station => (
+          <li key={station._id}>
+            <p>{station.name}</p>
+            <p>{station.address}</p>
+          </li>
+        ))}
+      </ul>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div>
+  );
+}
+
+export default App;

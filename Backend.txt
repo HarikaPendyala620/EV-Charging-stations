@@ -1,0 +1,49 @@
+// server.js
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/ev-charging-stations', { useNewUrlParser: true, useUnifiedTopology: true });
+
+app.use(express.json());
+
+// API endpoints
+app.get('/stations', async (req, res) => {
+  const stations = await Station.find();
+  res.json(stations);
+});
+
+app.get('/stations/:id', async (req, res) => {
+  const station = await Station.findById(req.params.id);
+  res.json(station);
+});
+
+app.post('/users', async (req, res) => {
+  const user = new User(req.body);
+  await user.save();
+  res.json(user);
+});
+
+app.post('/users/login', async (req, res) => {
+  const user = await User.findOne({ email: req.body.email, password: req.body.password });
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+app.post('/bookings', async (req, res) => {
+  const booking = new Booking(req.body);
+  await booking.save();
+  res.json(booking);
+});
+
+app.get('/bookings/:id', async (req, res) => {
+  const booking = await Booking.findById(req.params.id);
+  res.json(booking);
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
